@@ -1,0 +1,52 @@
+@model IEnumerable<RhSensoERP.Web.Services.Contracts.FuncionarioDto>
+@{
+    ViewData["Title"] = "Funcionários";
+    ViewData["Breadcrumb"] = "RHU / Funcionários";
+}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h5 mb-0">Funcionários</h2>
+                <small class="text-muted">Consulte e gerencie colaboradores</small>
+            </div>
+            <button class="btn btn-outline-success"><i class="fa-solid fa-file-import me-2"></i>Importar CSV</button>
+        </div>
+        <table class="table" id="funcionariosTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Cargo</th>
+                    <th>Admissão</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var funcionario in Model)
+                {
+                    <tr>
+                        <td>@funcionario.NomeCompleto</td>
+                        <td>@funcionario.Cpf</td>
+                        <td>@funcionario.Cargo</td>
+                        <td>@funcionario.Admissao.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge @(funcionario.Ativo ? "bg-success" : "bg-secondary")">
+                                @(funcionario.Ativo ? "Ativo" : "Inativo")
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        new DataTable('#funcionariosTable', {
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-BR.json'
+            }
+        });
+    </script>
+}
