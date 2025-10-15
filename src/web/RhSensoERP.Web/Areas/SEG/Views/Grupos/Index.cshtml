@@ -1,0 +1,44 @@
+@model IEnumerable<RhSensoERP.Web.Services.Contracts.GrupoDto>
+@{
+    ViewData["Title"] = "Gestão de Grupos";
+    ViewData["Breadcrumb"] = "SEG / Grupos";
+}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h5 mb-0">Grupos e Funções</h2>
+                <small class="text-muted">Configure acessos por perfil</small>
+            </div>
+            <button class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>Novo Grupo</button>
+        </div>
+        <table class="table" id="gruposTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Permissões</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grupo in Model)
+                {
+                    <tr>
+                        <td>@grupo.Nome</td>
+                        <td>@grupo.Descricao</td>
+                        <td><span class="text-muted small">@string.Join(", ", grupo.Permissoes)</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        new DataTable('#gruposTable', {
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-BR.json'
+            }
+        });
+    </script>
+}

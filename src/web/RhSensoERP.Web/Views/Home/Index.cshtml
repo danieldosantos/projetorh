@@ -1,0 +1,73 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Breadcrumb"] = "Início / Dashboard";
+}
+<div class="row g-3">
+    @if (Model.Dados?.Kpis is not null)
+    {
+        foreach (var kpi in Model.Dados.Kpis)
+        {
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="card-title mb-1">@kpi.Titulo</h5>
+                                <h2 class="fw-bold mb-0">@kpi.Valor</h2>
+                            </div>
+                            <span class="badge @(kpi.VariacaoPositiva ? "bg-success" : "bg-danger")">@kpi.Variacao</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="row g-3 mt-1">
+    @if (Model.Dados?.Charts is not null)
+    {
+        foreach (var chart in Model.Dados.Charts)
+        {
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title">@chart.Titulo</h5>
+                        <canvas class="dashboard-chart"
+                                data-labels="@string.Join(',', chart.Labels)"
+                                data-values="@string.Join(',', chart.Valores)"></canvas>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            document.querySelectorAll('.dashboard-chart').forEach(function (canvas) {
+                const labels = canvas.dataset.labels.split(',');
+                const values = canvas.dataset.values.split(',').map(Number);
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data: values,
+                            borderColor: '#1ab394',
+                            backgroundColor: 'rgba(26, 179, 148, 0.2)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
